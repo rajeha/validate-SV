@@ -1,6 +1,6 @@
 # validate-SV
 
-Perl scripts to validate structural variation (SV) events. Input is tab-delimited, BLAST-like alignment results (hits) of the de-novo-assembled contig across the supposed SV breakpoint onto a reference. Output is 1 for valid and 0 for invalid.
+Perl scripts to validate structural variation (SV) events. Input is tab-delimited, BLAST-like alignment results (hits) of the de-novo-assembled contig across a supposed SV breakpoint onto a reference. Output is 1 for valid and 0 for invalid.
 ***
 - __greedy.pl__ <br>
 Greedily finds a subset of non-overlapping hits in both the reference and the contig. Hits should be alignment by preferred _significance_.
