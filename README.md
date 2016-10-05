@@ -6,7 +6,7 @@ Perl scripts to validate structural variation (SV) events. Input is tab-delimite
 Greedily finds a subset of non-overlapping hits in both the reference and the contig. Input hits should be sorted by preferred _significance_. Requires [the interval tree module](http://search.cpan.org/~benbooth/Set-IntervalTree-0.01/lib/Set/IntervalTree.pm). (*Will try to write more portable code in the future!*) <br>
 In this example, I choose to favor hits with higher bit score.:
 ```
-$ cat blast.out | sort -k11,11 -g -r | greed.pl > non_overlapping.out
+$ cat blast.out | sort -k11,11 -g -r | greedy.pl > non_overlapping.out
 ```
 
 - __is_inv.pl__ <br>
