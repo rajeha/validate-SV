@@ -39,7 +39,7 @@ $ samtools view alignnment_sorted.bam "chr1:4000-6000" | cut -f1 > ids.tmp
 ```
 $ LC_ALL=C grep -w -F -f ids.tmp < alignment.sam > subset.sam
 ```
-1-c) fix header information in the new SAM file. If the genome you're working with has 3 chromosomes, you need the top 4 lines from teh original SAM file:
+1-c) fix header information in the new SAM file. If the genome you're working with has 3 chromosomes, you need the top 4 lines from the original SAM file:
 ```
 $ echo -e "$(head -4 ../alignment.sam)\n$(cat subset.sam" > subset.sam
 ```
@@ -47,7 +47,7 @@ $ echo -e "$(head -4 ../alignment.sam)\n$(cat subset.sam" > subset.sam
 ```
 $ samtools view -b subset.sam | samtools fastq -1 reads_1.fq reads_2.fq - 
 ```
-1-e) Fix reads' headers. Here, the headers all start with "@SR":
+1-e) fix reads' headers. Here, the headers all start with "@SR":
 ```
 $ perl -pi.bak -e 's/\@SR.+\S/$&\/1/' reads_1.fq
 $ perl -pi.bak -e 's/\@SR.+\S/$&\/2/' reads_2.fq
