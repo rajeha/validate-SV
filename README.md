@@ -24,4 +24,49 @@ Detects a deletion larger than 100 bp. Input hits must be non-overlapping.
 - __is_ins.pl__ <br>
 Detects an insertion larger than 100 bp. Input hits must be non-overlapping.
 
+---
 
+#Example Workflow
+Say you suspect there is a duplication in chromosome 1 at coordinate 5000 and you want to validate it.
+
+__1)__ Extract reads +/- 1Kbp from the target coordinate
+
+1-a) find IDs of the reads within this range:
+```
+$ samtools view alignnment_sorted.bam "chr1:4000-6000" | cut -f1 > ids.tmp
+```
+1-b) grep for reads with those IDs from original SAM file:
+```
+$ LC_ALL=C grep -w -F -f ids.tmp < alignment.sam > subset.sam
+```
+1-c) fix header information in the new SAM file. If the genome you're working with has 3 chromosomes, you need the top 4 lines from teh original SAM file:
+```
+$ echo -e "$(head -4 ../alignment.sam)\n$(cat subset.sam" > subset.sam
+```
+1-d) convert new SAM to reads. If paired-end reads:
+```
+$ samtools view -b subset.sam | samtools fastq -1 reads_1.fq reads_2.fq - 
+```
+1-e) Fix reads' headers. Here, the headers all start with "@SR":
+```
+$ perl -pi.bak -e 's/\@SR.+\S/$&\/1/' reads_1.fq
+$ perl -pi.bak -e 's/\@SR.+\S/$&\/2/' reads_2.fq
+```
+
+__2)__ De-novo assemble a contig from the extracted reads 
+```
+$ velveth output 31 -shortPaired -separate -fastq reads_1.fq reads_2.fq
+$ velvetg output -exp_cov auto -cov_cutoff auto
+```
+
+__3)__ BLAST the contig onto a reference sequence
+```
+$ blastn -db reference.fasta -query contigs.fa -prec_identity 95 -outfmt 6 -out blast.out
+```
+
+__4)__ Infer validity of duplication from alignment
+```
+$ cat blast.out | is_dup.pl
+0
+```
+We find that the duplication is not supported by de-novo assembly!
