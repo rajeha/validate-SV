@@ -42,11 +42,12 @@ $ run_fermi.sh r1.fq r2.fq
 ```
 
 __3)__ Re-align the contig
+
+[yaha](http://github.com/GregoryFaust/yaha) is an aligner that is optimized for finding split-mappings. <br>
+It will not consider splits on two chromosomes, so use `-FBS Y` for translocations and convert the alignment to BEDPE (bedtools). Also, `-FBS Y` is necessary for finding duplications.
 ```
 $ yaha -x ref.yhidx -q frm.fa -o8 yh
 ```
-[yaha](http://github.com/GregoryFaust/yaha) is an aligner that is optimized for finding split-mappings. <br>
-It will not consider splits on two chromosomes, so use `-FBS Y` for translocations and convert the alignment to BEDPE (bedtools). Also, `-FBS Y` is necessary for finding duplications.
 
 __4)__ Infer validity of SV from alignment
 ```
@@ -71,9 +72,9 @@ $ samtools view alignnment_sorted.bam "chr1:4000-6000" | cut -f1 > ids.tmp
 ```
 $ LC_ALL=C grep -w -F -f ids.tmp < alignment.sam > subset.sam
 ```
-1-c) fix header information in the new SAM file. If the genome you're working with has 3 chromosomes, you need the top 4 lines from the original SAM file:
+1-c) fix header information in the new SAM file:
 ```
-$ echo -e "$(head -4 ../alignment.sam)\n$(cat subset.sam" > subset.sam
+$ echo -e "$(samtools view -H ../alignment.sam)\n$(cat subset.sam" > subset.sam
 ```
 1-d) convert new SAM to reads. If paired-end reads:
 ```
