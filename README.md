@@ -1,6 +1,6 @@
 # validate-SV
 
-Perl scripts to validate structural variation (SV) events.
+Perl scripts to validate structural variation (SV) events from de-novo assembly.
 
 - __is\_{del,ins,dup,inv}.pl__ <br>
 Detect deletions, insertions, duplications, and inversions. <br>
