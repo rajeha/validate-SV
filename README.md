@@ -51,7 +51,7 @@ $ yaha -x ref.yhidx -q frm.fa -o8 yh
 
 __4)__ Infer validity of SV from alignment
 ```
-$ cat yh | is_del.pl
+$ cat yh | is_del.pl chr1 50000
 0
 ```
 
