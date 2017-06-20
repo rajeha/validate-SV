@@ -17,10 +17,11 @@ sub within {
 while (<>) {
 	my ($chra, $coorda1, $coorda2, $chrb, $coordb1, $coordb2) = (split)[0,1,2,3,4,5];
 
-	if ((within($tchra, $tcoorda, $chra, $coorda1, $coorda2) &&
-				($chrb eq $tchrb)) ||
-			($chra eq $tchra) ||
-			 (within($tchrb, $tcoordb, $chrb, $coordb1, $coordb2))) {
+	if ((within($tchra, $tcoorda, $chra, $coorda1, $coorda2) && ($chrb eq $tchrb)) ||
+			(($chra eq $tchra) && within($tchrb, $tcoordb, $chrb, $coordb1, $coordb2)) || 
+			(within($tchra, $tcoorda, $chrb, $coordb1, $coordb2) && ($chra eq $tchrb)) ||
+			(($chrb eq $tchra) && within($tchrb, $tcoordb, $chra, $coorda1, $coorda2))) {
+
 		print "1\n";
 		print STDERR $_;	
 		exit;
