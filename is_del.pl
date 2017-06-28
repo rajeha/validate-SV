@@ -36,7 +36,7 @@ for my $index (1..$#in) {
 	@curr[8,9] = @curr[9,8] if $curr[8] > $curr[9];
 
 	
-	# calculate the contig-overlap between two prev and curr
+	# calculate the contig-overlap between prev and curr
 	my $overlap = $prev[7] <= $curr[6]? 0 : $prev[7] - $curr[6]; 
 
 	# test if same contig and chromosome
@@ -45,7 +45,7 @@ for my $index (1..$#in) {
 		# test if overlap between alignments in the contig is less than 75%
 		if ($overlap / (max($curr[7],$prev[7]) - min($prev[6],$curr[6])) <= 0.75) {
 			# length of deletion = 
-			#   distance between alignments in contig - distance between alignments in reference
+			#   distance between alignments in reference - distance between alignments in contig
 			my $len = max($prev[8],$curr[8]) - min($curr[9],$prev[9]) - ($curr[6] - $prev[7] - $overlap);
  
 			if ($len > 100) {
